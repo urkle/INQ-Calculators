@@ -166,6 +166,18 @@ $(function() {
     });
     $('#player_level_display').text('01');
 
+    $('.difficulty_selector > a').live('click',function(e) {
+        var o = $(this);
+        var diffs = ['easy','normal','challenging','hard','very_hard'];
+        var cur = o.attr('type');
+        var p = o.parent();
+        for (var i=0,l=diffs.indexOf(cur); i<=l; ++i) {
+            p.find('a[type="'+diffs[i]+'"]').addClass(diffs[i]);
+        }
+        for (l=diffs.length; i<l; i++) {
+            p.find('a[type="'+diffs[i]+'"]').removeClass(diffs[i]);
+        }
+    });
     $('#level_range').slider({
         orientation: 'horizontal',
         min: 1,

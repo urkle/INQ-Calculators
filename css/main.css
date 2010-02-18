@@ -247,7 +247,7 @@ ul.legend a {
     color: white;
 }
 
-.tool_popup.ui-slider-horizontal {
+.tool_popup_wrapper .ui-slider-horizontal {
     margin: 0.5em auto;
     width: 95%;
 }
@@ -414,6 +414,18 @@ ul.legend a {
     background-position: -58px 0;
 }
 
+/* Mob Difficulty Selectors */
+
+.difficulty_selector {
+    padding: 0 0.5em;
+}
+.difficulty_selector > a {
+    color: #c8c8c8;
+    padding-left: 5%;
+}
+.difficulty_selector > a:first-child {
+    padding-left: 0;
+}
 
 /* Challenge Ratings */
 

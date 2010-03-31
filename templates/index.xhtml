@@ -20,6 +20,7 @@
     <script type="text/javascript" src="js/jquery.qtip-1.0.min.js"></script>
     <script type="text/javascript" src="js/inqtools.js"></script>
     <script type="text/javascript" src="js/Trainer.js"></script>
+    <script type="text/javascript" src="js/Armory.js"></script>
     <script type="text/javascript" src="js/mapWidget.js"></script>
     <script type="text/javascript" src="js/Polygon.js"></script>
     <script type="text/javascript" src="js/interactiveMap.js"></script>
@@ -58,6 +59,32 @@
         </div>
         <div id="errorDialog" title="Error">
             <div class="message"/>
+        </div>
+        <div id="AddArmorDialog" title="Add New Armor">
+            <ul class="ui-helper-reset">
+                <li>Name: <input param="name" type="text"/></li>
+                <li>Class: <select param="class">
+                    <option value="">-- Class --</option>
+                    <option>Archer</option>
+                    <option value="Hunter">&raquo; Hunter</option>
+                    <option value="Marksman">&raquo; Marksman</option>
+                    <option>Mage</option>
+                    <option value="Conjurer">&raquo; Conjurer</option>
+                    <option value="Warlock">&raquo; Warlock</option>
+                    <option>Warrior</option>
+                    <option value="Barbarian">&raquo; Barbarian</option>
+                    <option value="Knight">&raquo; Knight</option>
+                </select></li>
+                <li>Type: <select param="type"/></li>
+                <li>Armor Points: <input param="points" style="width: 4em;" type="text"/></li>
+                <li>Resistances:</li>
+                <li class="indent">Slashing: <select class="resistance" param="Slashing"/></li>
+                <li class="indent">Piercing: <select class="resistance"  param="Piercing"/></li>
+                <li class="indent">Blunt: <select class="resistance"  param="Blunt"/></li>
+                <li class="indent">Fire: <select class="resistance"  param="Fire"/></li>
+                <li class="indent">Ice: <select class="resistance"  param="Ice"/></li>
+                <li class="indent">Lightning: <select class="resistance"  param="Lightning"/></li>
+            </ul>
         </div>
     <!-- End The Tools -->
     <div id="header">
@@ -239,7 +266,11 @@
           </div>
           <div id="armor" class="content">
             <h2>Armor Points</h2>
-            Coming soon
+            <p>Which armor is the best? Show me thy coverings and I shall reveal.</p>
+            <ul id="armory" class="ui-helper-reset">
+                <li class="addbutton">Add Armor</li>
+            </ul>
+            <div id="armorset1"/>
           </div>
           <div id="trainer" class="content">
             <h2>Trainer</h2>

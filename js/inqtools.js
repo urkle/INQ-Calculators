@@ -337,6 +337,79 @@ $(function() {
         map: 'images/map/map.xml'
     });
 
+    /** Armor Dialog */
+    $('#AddArmorDialog').dialog({
+        autoOpen: false,
+        modal: true,
+        open: function(event, ui) {
+            // Reset dialog
+            var params = $(this).find('*[param]');
+            for (var i=0,l=params.length; i<l; ++i) {
+                var o = params.eq(i);
+                switch (o.attr('param')) {
+                case 'name':
+                case 'points':
+                    o.val('');
+                    break;
+                case 'class':
+                    o.val('').change();
+                    break;
+                case 'type':
+                    //updated by class
+                    break;
+                case 'Slashing':
+                case 'Piercing':
+                case 'Blunt':
+                case 'Fire':
+                case 'Ice':
+                case 'Lightning':
+                    o.val('Normal');
+                    break;
+                default:
+                    console.log('Unknown Parameter '+o.attr('param'));
+                }
+            }
+        },
+        buttons:{
+            'Add':function(event, ui) {
+                var r = {};
+                var o = $(this);
+                var ro = o.find('.resistance');
+                for (var i=0,l=ro.length; i<l; ++i) {
+                    r[ro.eq(i).attr('param')] = ro.eq(i).val();
+                }
+                var name = o.find('*[param="name"]').val();
+                var sClass = o.find('*[param="class"]').val();
+                var type = o.find('*[param="type"]').val();
+                var points = o.find('*[param="points"]').val();
+
+                if ($.trim(name).length < 0 || sClass == ''
+                        || type == '' || isNaN(parseInt(points))) {
+                    ShowError('Please specify Name, Class, Type, and Points.');
+                    return;
+                }
+                var a = new cArmor(name, sClass, type, points, r);
+                Armory.addArmor(a);
+                RefreshArmoryDisplay(a);
+                $(this).dialog('close');
+            }
+        }
+    })
+    // Add interaction to armor dialog
+    .find('*[param="class"]').change(function(e) {
+        var o = $('#AddArmorDialog *[param="type"]');
+        if ($(this).val() == '') {
+            o.html('<option value="">-- Choose Class First --</option>');
+        } else {
+            o.html('<option value="">-- Armor Type --</option>'
+                +'<option>'
+                    +cArmor.TypesForClass($(this).val()).join('</option><option>')
+                +'</option>');
+        }
+    })
+    .end().find('.resistance')
+        .html('<option>'+cArmor.Qualities().join('</option><option>')+'</option>');
+
     $('#errorDialog').dialog({
         autoOpen: false,
         modal: true,
@@ -352,6 +425,25 @@ $(function() {
     }).prev().addClass('ui-state-error');
 
     window.Trainer = new cTrainer('#trainer_tool');
+    window.Armory = new cArmory();
+
+    $('#armory').sortable({
+        items: 'li:not(.addbutton)',
+        placeholder: 'ui-state-highlight',
+        distance: 15
+    }).find('li').disableSelection();
+    $('#armorset1').droppable({
+        activeClass: 'ui-state-active',
+        hoverClass: 'ui-state-highlight',
+        accept: '.armor',
+        drop: function(event, ui) {
+            console.log(ui.draggable.text());
+        }
+    });
+
+    $('#armory > .addbutton').addClass('pointer').click(function() {
+        $('#AddArmorDialog').dialog('open');
+    });
 
     // Do this AFTER all widgets are setup to insure they "hide" correctly
     var curpage = '#home';
@@ -645,3 +737,28 @@ function ShowError(msg) {
         .data('error',{message:msg})
         .dialog('open');
 }
+
+function RefreshArmoryDisplay(aNewItem) {
+    function AddItem(i, a) {
+        $('<li/>')
+            .addClass('ui-state-default armor')
+            .text(a.name + ' ('+a.points+')')
+            .disableSelection()
+            .insertBefore('#armory > .addbutton');
+    }
+    if (aNewItem) {
+        AddItem(-1, aNewItem);
+    } else {
+        $('#armory > li:not(.addbutton)').remove();
+        $.each(Armory.listArmor(), AddItem);
+    }
+}
+
+$(function($) {
+    Armory
+        .addArmor(new cArmor('Cloak of Insanity','Mage','Tunic',500,
+            {Slashing:'Normal',Piercing:'Normal',Blunt:'Normal',Fire:'Normal',Ice:'Normal',Lightning:'Normal'}))
+        .addArmor(new cArmor('Cloak of Sanity','Mage','Tunic',500,
+            {Slashing:'Normal',Piercing:'Normal',Blunt:'Normal',Fire:'Normal',Ice:'Normal',Lightning:'Normal'}));
+    RefreshArmoryDisplay();
+});

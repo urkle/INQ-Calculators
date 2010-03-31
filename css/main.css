@@ -58,6 +58,10 @@ h2 {
     text-align: center;
 }
 
+li.indent {
+    margin-left: 2em;
+}
+
 ul.legend {
     list-style: url('../images/gem.png');
     color: #EFC235;
@@ -620,3 +624,26 @@ ul.legend a {
     font-size: 75%;
     font-weight: lighter;
 }
+
+/* Armory */
+#armory {
+    width: 40%;
+}
+#armory li {
+    height: 1.1em;
+    font-weight: normal;
+    padding: 3px;
+    margin: 0 3px 3px 3px;
+}
+#armory li.addbutton {
+    border-color: #8d8a89 #13100e #13100e #8d8a89;
+    border-width: 2px;
+    border-style: solid;
+    background-color: #1b1613;
+}
+#armorset1, #armorset2 {
+    width: 200px;
+    height: 200px;
+    right: -1px;
+}
+
